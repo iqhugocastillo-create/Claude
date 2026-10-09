@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Lluvia de ideas: introducción de tesis</title>
+<link rel="stylesheet" href="fonts/f.css">
+<style>
+/* Layout: 3 páginas carta horizontal — mapa mental, embudo + párrafo, línea de tiempo + preguntas */
+:root{
+  --abyss:#0b2e3c; --sea:#136f7a; --shallow:#5fb3b0; --foam:#e6f2ef;
+  --sand:#f6efe2; --coral:#e2664c; --ink:#1d2a30; --muted:#5b6c72;
+  --display:"Fraunces", Georgia, serif;
+  --body:"Source Sans 3", "Liberation Sans", Arial, sans-serif;
+}
+@page{ size: 11in 8.5in; margin:0 }
+*{ box-sizing:border-box }
+html,body{ margin:0; background:var(--sand); color:var(--ink); font-family:var(--body);
+  -webkit-print-color-adjust:exact; print-color-adjust:exact }
+.page{ width:11in; height:8.5in; position:relative; overflow:hidden; page-break-after:always;
+  padding:0.45in 0.55in; background:var(--sand) }
+.page:last-child{ page-break-after:auto }
+.eyebrow{ font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--sea); font-weight:700 }
+h1{ font-family:var(--display); font-weight:800; font-size:30px; line-height:1.05; margin:4px 0 0; color:var(--abyss); text-wrap:balance }
+h2{ font-family:var(--display); font-weight:700; font-size:24px; margin:4px 0 12px; color:var(--abyss) }
+h3{ font-family:var(--display); font-weight:700; font-size:16px; margin:0 0 6px; color:var(--abyss) }
+.pnum{ position:absolute; right:.55in; bottom:.3in; font-size:10px; color:var(--muted); letter-spacing:.12em }
+
+/* ---------- página 1: mapa mental ---------- */
+.map{ position:absolute; inset:1.25in .4in .4in .4in }
+.map svg{ position:absolute; inset:0; width:100%; height:100% }
+.core{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:290px; height:290px;
+  border-radius:50%; background:radial-gradient(circle at 35% 30%, var(--sea), var(--abyss) 70%);
+  color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:34px;
+  box-shadow:0 0 0 10px rgba(95,179,176,.25), 0 0 0 22px rgba(95,179,176,.12) }
+.core .t{ font-family:var(--display); font-weight:800; font-size:22px; line-height:1.1 }
+.core .cq{ font-size:11.5px; line-height:1.35; margin-top:10px; color:var(--foam) }
+.core svg.fish{ position:static; width:70px; height:30px; margin-bottom:6px }
+.node{ position:absolute; width:262px; background:#fff; border-radius:14px; padding:12px 14px 12px;
+  border:1.5px solid var(--c); box-shadow:0 3px 0 var(--c) }
+.node .tag{ display:inline-block; font-size:9.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+  color:#fff; background:var(--c); border-radius:20px; padding:3px 9px; margin-bottom:6px }
+.node ul{ margin:0; padding-left:15px; font-size:11.3px; line-height:1.38 }
+.node li::marker{ color:var(--c) }
+.node b{ color:var(--abyss) }
+
+/* ---------- página 2 ---------- */
+.two{ display:grid; grid-template-columns: 3.7in 1fr; gap:.4in; margin-top:14px }
+.funnel{ display:flex; flex-direction:column; align-items:center; gap:6px }
+.lvl{ color:#fff; text-align:center; padding:10px 14px; clip-path:polygon(0 0,100% 0,94% 100%,6% 100%);
+  font-size:12px; line-height:1.25 }
+.lvl b{ display:block; font-family:var(--display); font-size:14px; margin-bottom:2px }
+.para{ background:#fff; border-radius:16px; padding:22px 26px; border:1.5px solid var(--shallow); position:relative }
+.para p{ font-size:13.4px; line-height:1.62; margin:0; text-align:justify; hyphens:auto }
+.mk{ border-radius:4px; padding:0 3px }
+.m1{ background:#d7ece9 } .m2{ background:#fbe2cf } .m3{ background:#e5e1f3 } .m4{ background:#fbd5cc } .m5{ background:#dde9c8 }
+.legend{ display:flex; flex-wrap:wrap; gap:6px 14px; margin-top:12px; font-size:10.5px; color:var(--muted) }
+.legend span i{ display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:5px; vertical-align:-1px }
+.keys{ display:flex; flex-wrap:wrap; gap:6px; margin-top:14px }
+.keys span{ font-size:10.5px; border:1px solid var(--sea); color:var(--sea); border-radius:20px; padding:3px 10px; background:var(--foam) }
+.ph{ color:var(--coral); font-weight:700 }
+
+/* ---------- página 3 ---------- */
+.tl{ position:relative; margin:18px 0 0; height:1.75in }
+.tl .bar{ position:absolute; left:0; right:0; top:58px; height:6px; border-radius:3px;
+  background:linear-gradient(90deg, var(--abyss), var(--sea), var(--shallow), var(--coral)) }
+.ev{ position:absolute; top:0; width:178px; transform:translateX(-50%); text-align:center }
+.ev .when{ font-family:var(--display); font-weight:800; font-size:20px; color:var(--abyss); height:44px; display:flex; align-items:flex-end; justify-content:center; font-variant-numeric:tabular-nums }
+.ev .dot{ width:20px; height:20px; border-radius:50%; background:#fff; border:5px solid var(--abyss); margin:5px auto 10px }
+.ev .what{ font-size:12px; line-height:1.35 }
+.ev .what b{ display:block; font-size:12px; color:var(--abyss) }
+.grid3{ display:grid; grid-template-columns:1.25fr 1fr; gap:.35in; margin-top:6px }
+.qs{ display:grid; gap:8px }
+.q{ display:flex; gap:10px; align-items:flex-start; background:#fff; border-radius:12px; padding:14px 14px; border-left:5px solid var(--coral) }
+.q .n{ font-family:var(--display); font-weight:800; font-size:20px; color:var(--coral); line-height:1 }
+.q p{ margin:0; font-size:13px; line-height:1.38 }
+.refs{ background:var(--abyss); color:var(--foam); border-radius:14px; padding:14px 18px }
+.refs h3{ color:#fff }
+.refs ol{ margin:0; padding-left:16px; font-size:11.6px; line-height:1.42 }
+.refs li{ margin-bottom:5px }
+.refs .note{ font-size:9.8px; color:var(--shallow); margin-top:6px }
+.tip{ margin-top:10px; background:var(--foam); border-radius:12px; padding:10px 14px; font-size:11px; line-height:1.4; color:var(--abyss) }
+</style>
+</head>
+<body>
+
+<!-- ============ PÁGINA 1 ============ -->
+<section class="page">
+  <div class="eyebrow">Tesis doctoral · Lluvia de ideas para la introducción</div>
+  <h1>Evolución de un pez críptico en el Golfo de California</h1>
+
+  <div class="map">
+    <svg viewBox="0 0 1000 620" preserveAspectRatio="none" aria-hidden="true">
+      <g fill="none" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 7">
+        <path d="M500 310 C 380 250, 330 110, 270 95"  stroke="#136f7a"/>
+        <path d="M500 310 C 400 310, 330 310, 270 310" stroke="#e2664c"/>
+        <path d="M500 310 C 380 370, 330 520, 270 525" stroke="#7a5ea8"/>
+        <path d="M500 310 C 620 250, 670 110, 730 95"  stroke="#c28a1e"/>
+        <path d="M500 310 C 600 310, 670 310, 730 310" stroke="#2f7d4f"/>
+        <path d="M500 310 C 620 370, 670 520, 730 525" stroke="#0b2e3c"/>
+      </g>
+      <!-- olas decorativas -->
+      <g fill="none" stroke="#5fb3b0" stroke-opacity=".35" stroke-width="1.5">
+        <path d="M330 600 q20 -10 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0"/>
+        <path d="M350 612 q20 -10 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0"/>
+      </g>
+    </svg>
+
+    <div class="core">
+      <svg class="fish" viewBox="0 0 70 30" aria-hidden="true">
+        <path d="M6 15 C 18 2, 44 2, 56 15 C 44 28, 18 28, 6 15 Z" fill="#5fb3b0"/>
+        <path d="M54 15 L68 5 L66 15 L68 25 Z" fill="#5fb3b0"/>
+        <circle cx="17" cy="13" r="2.4" fill="#0b2e3c"/>
+        <path d="M24 8 v14 M32 7 v16 M40 8 v14" stroke="#0b2e3c" stroke-opacity=".35" stroke-width="2"/>
+      </svg>
+      <div class="t">Pez críptico<br>en el Golfo</div>
+      <div class="cq">¿Cómo la historia geológica y oceanográfica del Golfo moldeó la divergencia de sus linajes ocultos?</div>
+    </div>
+
+    <div class="node" style="--c:#136f7a; left:0; top:0">
+      <span class="tag">Escenario</span>
+      <h3>El Golfo de California</h3>
+      <ul>
+        <li>Mar marginal <b>joven</b>: proto‑golfo ~12 Ma, apertura ~6 Ma</li>
+        <li>Regiones: norte, <b>Grandes Islas</b>, centro y sur</li>
+        <li>Gradientes de temperatura, productividad y mareas</li>
+        <li>Cientos de islas y arrecifes rocosos; alto endemismo</li>
+      </ul>
+    </div>
+
+    <div class="node" style="--c:#e2664c; left:0; top:218px">
+      <span class="tag">Organismo</span>
+      <h3>¿Qué es un pez críptico?</h3>
+      <ul>
+        <li>Criptobentónicos, talla pequeña (&lt;5 cm)</li>
+        <li>Gobios, blénidos, labrisómidos, chaenópsidos, tripterígidos</li>
+        <li>Viven ocultos en grietas, rocas y coral</li>
+        <li>“Biodiversidad oculta”: abundantes pero poco estudiados</li>
+      </ul>
+    </div>
+
+    <div class="node" style="--c:#7a5ea8; left:0; top:436px">
+      <span class="tag">Idea clave</span>
+      <h3>Doble sentido de “críptico”</h3>
+      <ul>
+        <li><b>Ecológico:</b> difícil de ver y muestrear</li>
+        <li><b>Taxonómico:</b> especies crípticas, morfología similar pero linajes distintos</li>
+        <li>Puente perfecto para justificar la tesis</li>
+      </ul>
+    </div>
+
+    <div class="node" style="--c:#c28a1e; right:0; top:0">
+      <span class="tag">Procesos</span>
+      <h3>Motores de la evolución</h3>
+      <ul>
+        <li><b>Vicarianza</b> por la formación del Golfo</li>
+        <li>Barreras oceanográficas y de hábitat</li>
+        <li>Ciclos glaciales del Pleistoceno y nivel del mar</li>
+        <li>Disyunción Pacífico–Golfo; adaptación local</li>
+      </ul>
+    </div>
+
+    <div class="node" style="--c:#2f7d4f; right:0; top:218px">
+      <span class="tag">Herramientas</span>
+      <h3>Cómo responderlo</h3>
+      <ul>
+        <li>Filogeografía (COI, cyt b)</li>
+        <li>Genómica: RADseq / ddRAD, genomas</li>
+        <li>Datación molecular de divergencias</li>
+        <li>Morfometría geométrica y modelos de nicho</li>
+      </ul>
+    </div>
+
+    <div class="node" style="--c:#0b2e3c; right:0; top:436px">
+      <span class="tag">Relevancia</span>
+      <h3>¿Por qué importa?</h3>
+      <ul>
+        <li>Inventario real de la biodiversidad</li>
+        <li>Conectividad para Áreas Marinas Protegidas</li>
+        <li>Endemismos vulnerables al calentamiento</li>
+        <li>Modelo para entender especiación marina</li>
+      </ul>
+    </div>
+  </div>
+  <div class="pnum">1 / 3</div>
+</section>
+
+<!-- ============ PÁGINA 2 ============ -->
+<section class="page">
+  <div class="eyebrow">Estructura del párrafo · De lo general a lo particular</div>
+  <h2>Embudo argumentativo y borrador</h2>
+
+  <div class="two">
+    <div>
+      <div class="funnel">
+        <div class="lvl" style="width:100%; background:#136f7a"><b>1 · Contexto amplio</b>El Golfo como mar joven y diverso</div>
+        <div class="lvl" style="width:88%; background:#3c8f95"><b>2 · Laboratorio natural</b>Gradientes, islas e historia geológica</div>
+        <div class="lvl" style="width:76%; background:#e2664c"><b>3 · El grupo</b>Peces crípticos: diversidad oculta</div>
+        <div class="lvl" style="width:64%; background:#7a5ea8"><b>4 · El vacío</b>Linajes crípticos y su historia poco resuelta</div>
+        <div class="lvl" style="width:52%; background:#0b2e3c"><b>5 · La tesis</b>Objetivo y enfoque</div>
+      </div>
+      <div class="tip"><b>Consejo:</b> cada nivel del embudo es una o dos oraciones. Cierra siempre con el objetivo de la tesis, para que el lector sepa qué viene en los capítulos.</div>
+      <h3 style="margin-top:14px">Palabras clave</h3>
+      <div class="keys">
+        <span>Golfo de California</span><span>peces criptobentónicos</span><span>especies crípticas</span>
+        <span>filogeografía</span><span>vicarianza</span><span>diversificación</span><span>endemismo</span><span>conectividad</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="para">
+        <h3>Borrador de párrafo introductorio</h3>
+        <p>
+          <span class="mk m1">El Golfo de California es uno de los mares marginales más jóvenes y biodiversos del planeta. Su apertura, iniciada hace unos 12 millones de años y consolidada hace aproximadamente 6 millones con la separación de la península de Baja California,</span>
+          <span class="mk m2">generó un mosaico de ambientes con marcados gradientes de temperatura, productividad y régimen de mareas, además de cientos de islas y arrecifes rocosos. Este escenario lo convierte en un laboratorio natural para estudiar cómo los procesos geológicos y oceanográficos moldean la diversificación de los organismos marinos.</span>
+          <span class="mk m3">Entre ellos, los peces crípticos o criptobentónicos, especies de talla pequeña que viven ocultas en grietas, rocas y corales, representan una fracción considerable de la diversidad íctica de los arrecifes,</span>
+          <span class="mk m4">pero siguen siendo de los grupos menos estudiados por su difícil detección y por una morfología conservada que con frecuencia esconde linajes genéticamente distintos. Su estrecha asociación con el hábitat y, en muchos casos, su dispersión limitada los hacen especialmente sensibles a barreras históricas y actuales, lo que los vuelve modelos idóneos para reconstruir la historia evolutiva de la región.</span>
+          <span class="mk m5">En este contexto, la presente tesis analiza la evolución de <span class="ph">[especie / género]</span> en el Golfo de California, integrando herramientas filogeográficas, genómicas y morfológicas para delimitar sus linajes, estimar sus tiempos de divergencia y evaluar el papel de la historia del Golfo en su diversificación.</span>
+        </p>
+        <div class="legend">
+          <span><i style="background:#d7ece9"></i>Contexto</span>
+          <span><i style="background:#fbe2cf"></i>Laboratorio natural</span>
+          <span><i style="background:#e5e1f3"></i>El grupo</span>
+          <span><i style="background:#fbd5cc"></i>El vacío</span>
+          <span><i style="background:#dde9c8"></i>La tesis</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pnum">2 / 3</div>
+</section>
+
+<!-- ============ PÁGINA 3 ============ -->
+<section class="page">
+  <div class="eyebrow">Historia del escenario · Preguntas · Lecturas</div>
+  <h2>Línea de tiempo del Golfo y su fauna críptica</h2>
+
+  <div class="tl">
+    <div class="bar"></div>
+    <div class="ev" style="left:9%"><div class="when">~12 Ma</div><div class="dot"></div>
+      <div class="what"><b>Proto‑golfo</b>Inicia el rifting y la invasión marina temprana</div></div>
+    <div class="ev" style="left:30%"><div class="when">~6 Ma</div><div class="dot" style="border-color:#136f7a"></div>
+      <div class="what"><b>Apertura del Golfo</b>La península se desplaza con la placa del Pacífico</div></div>
+    <div class="ev" style="left:51%"><div class="when">Plioceno</div><div class="dot" style="border-color:#3c8f95"></div>
+      <div class="what"><b>¿Canales transpeninsulares?</b>Posibles conexiones Pacífico–Golfo (hipótesis en debate)</div></div>
+    <div class="ev" style="left:72%"><div class="when">2.6 Ma–12 ka</div><div class="dot" style="border-color:#5fb3b0"></div>
+      <div class="what"><b>Pleistoceno</b>Glaciaciones; el nivel del mar baja hasta ~120 m</div></div>
+    <div class="ev" style="left:91%"><div class="when">Hoy</div><div class="dot" style="border-color:#e2664c"></div>
+      <div class="what"><b>Presente</b>Gradientes regionales, AMPs y calentamiento oceánico</div></div>
+  </div>
+
+  <div class="grid3">
+    <div>
+      <h3>Preguntas que pueden guiar la introducción</h3>
+      <div class="qs">
+        <div class="q"><span class="n">?</span><p>¿Cuántos linajes evolutivos existen realmente dentro de <span class="ph">[especie]</span> y dónde se distribuyen?</p></div>
+        <div class="q"><span class="n">?</span><p>¿Coinciden sus tiempos de divergencia con eventos geológicos del Golfo o con ciclos glaciales?</p></div>
+        <div class="q"><span class="n">?</span><p>¿Actúan las Grandes Islas o los gradientes térmicos como barreras al flujo génico?</p></div>
+        <div class="q"><span class="n">?</span><p>¿Están separadas las poblaciones del Golfo y de la costa pacífica de Baja California?</p></div>
+      </div>
+    </div>
+    <div>
+      <div class="refs">
+        <h3>Lecturas para arrancar</h3>
+        <ol>
+          <li>Brandl et al. (2018) <i>Science</i>: dinámica demográfica de los peces criptobentónicos y su papel en el arrecife.</li>
+          <li>Riginos &amp; Nachman (2001) <i>Molecular Ecology</i>: estructura genética de <i>Axoclinus nigricaudus</i> en el Golfo.</li>
+          <li>Bernardi, Findley &amp; Rocha‑Olivares (2003) <i>Evolution</i>: vicarianza y dispersión a través de Baja California.</li>
+          <li>Thomson, Findley &amp; Kerstitch (2000) <i>Reef Fishes of the Sea of Cortez</i>.</li>
+        </ol>
+        <div class="note">Verifica cada cita y añade estudios recientes sobre tu especie.</div>
+      </div>
+    </div>
+  </div>
+  <div class="pnum">3 / 3</div>
+</section>
+
+</body>
+</html>
